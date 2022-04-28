@@ -16,6 +16,9 @@ jobs:
         with:
           start: npm start
           browser: chrome
+          record: true
           wait-on: "http://localhost:4200"
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       - name: Jest run
         run: npm run test
