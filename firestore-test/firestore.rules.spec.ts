@@ -17,7 +17,7 @@ const getFirestore = (authUser?: { uid: string; token: TokenOptions }) =>
 
     const adminAuth = {
       uid: 'admin_user',
-      token: { email: 'earl.wagner@innovateworld.io' },
+      token: { email: 'earl.wagner@innovateworld.io', email_verified: true },
     };
     const badAuth = { uid: 'bad_user', token: { email: 'bad-user@test.com' } };
 
@@ -42,7 +42,7 @@ describe('Firestore security rules', () => {
   });
 
   it('non admin user can not read/write from the orgs collection', async () => {
-    const db = getFirestore(adminAuth);
+    const db = getFirestore();
     const newDoc = db.collection('orgs').doc('testDoc');
     const existingDoc = doc(db, 'orgs', 'existingDoc');
 
@@ -53,6 +53,19 @@ describe('Firestore security rules', () => {
       assertFails(deleteDoc(existingDoc)), // delete
     ]);
   });
+
+  it('admin user can read/write from the orgs collection', async () => {
+    const db = getFirestore(adminAuth);
+    const newDoc = doc(db, 'orgs', 'testDoc');
+    const existingDoc = doc(db, 'orgs', 'existingDoc');
+    await Promise.all([
+      assertSucceeds(getDoc(existingDoc)), //read
+      assertSucceeds(setDoc(newDoc, { foo: 'bar' })), // create
+      assertSucceeds(setDoc(existingDoc, { foo: 'bar' })), // update
+      assertSucceeds(deleteDoc(existingDoc)), // delete
+    ]);
+  });
+
   afterAll(async () => {
     await testEnv.cleanup();
   });
