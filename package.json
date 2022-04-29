@@ -8,6 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "test:rules": "firebase emulators:exec 'jest test --config=firebase.jest.config.js'",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "cypress:open": "cypress open",
@@ -17,12 +18,15 @@
   "dependencies": {
     "@angular/common": "~13.2.2",
     "@angular/core": "~13.2.2",
+    "@angular/fire": "^7.3.0",
     "@angular/forms": "~13.2.2",
     "@angular/platform-browser": "~13.2.2",
     "@angular/platform-browser-dynamic": "~13.2.2",
     "@angular/router": "~13.2.2",
     "@capacitor/core": "3.5.0",
+    "@firebase/rules-unit-testing": "^2.0.2",
     "@ionic/angular": "^6.0.0",
+    "firebase": "^9.7.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
